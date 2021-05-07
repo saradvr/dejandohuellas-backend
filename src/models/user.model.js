@@ -26,11 +26,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    city: {
-      type: String,
+    ongId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Ong',
     },
-    phone: {
-      type: String,
+    personId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Person',
     },
   },
   {
