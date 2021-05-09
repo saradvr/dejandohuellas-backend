@@ -4,6 +4,7 @@ const animalSchema = new Schema(
   {
     ong: {
       type: Schema.Types.ObjectId,
+      ref: 'Ong',
       required: true,
     },
     name: {
