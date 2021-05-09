@@ -1,35 +1,45 @@
-const { model, models, Schema } = require('mongoose');
+const { model, Schema } = require('mongoose');
 
 const animalSchema = new Schema(
   {
-    user: {
-      type: Schema.Types.ObjectId,
-      required: true,
-    },
     ong: {
       type: Schema.Types.ObjectId,
       required: true,
     },
-    typeAnimal: {
+    name: {
       type: String,
+      required: true,
+    },
+    animalType: {
+      type: String,
+      required: true,
     },
     age: {
       type: Number,
+      required: true,
     },
     sex: {
       type: String,
+      required: true,
     },
     history: {
       type: String,
+      required: true,
     },
     size: {
       type: String,
+      required: true,
+    },
+    profilePicture: {
+      type: String,
+      required: true,
     },
     photos: {
       type: [{ type: String }],
     },
     city: {
       type: String,
+      required: true,
     },
     requests: {
       type: [

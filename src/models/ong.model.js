@@ -1,4 +1,4 @@
-const { model, models, Schema } = require('mongoose');
+const { model, Schema } = require('mongoose');
 
 const ongSchema = new Schema(
   {
