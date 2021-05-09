@@ -25,6 +25,7 @@ module.exports = {
       const token = jwt.sign(
         {
           userId: user._id,
+          userTypeId: user.ongId ? user.ongId : user.personId,
           userType,
         },
         process.env.SECRET,
@@ -57,6 +58,7 @@ module.exports = {
       const token = jwt.sign(
         {
           userId: user._id,
+          userTypeId: user.ongId ? user.ongId : user.personId,
           userType,
         },
         process.env.SECRET,
