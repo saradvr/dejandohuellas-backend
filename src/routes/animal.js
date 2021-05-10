@@ -1,4 +1,8 @@
-const { create, getAnimal, update } = require('../controllers/animal.controller');
+const {
+  create,
+  getAnimal,
+  update,
+} = require('../controllers/animal.controller');
 const { auth } = require('../utils/auth');
 const { formData } = require('../utils/formData');
 
