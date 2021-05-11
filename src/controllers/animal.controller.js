@@ -58,7 +58,7 @@ module.exports = {
         user: { userTypeId },
       } = req;
       let animal = await Animal.findById(animalId);
-      if (animal.ong == userTypeId) {
+      if (animal.ong.ToString() === userTypeId.toString()) {
         animal = await Animal.findByIdAndUpdate(animalId, body, {
           new: true,
         }).populate({
@@ -88,29 +88,26 @@ module.exports = {
         user: { userTypeId },
       } = req;
       let animal = await Animal.findById(animalId);
-      let ong = {};
-      if (animal.ong == userTypeId) {
-        animal = await Animal.findByIdAndDelete(animalId);
-        ong = await Ong.findByIdAndUpdate(
+      if (animal.ong.toString() === userTypeId.toString()) {
+        const ong = await Ong.findByIdAndUpdate(
           userTypeId,
-          { $pull: { animals: animal._id } },
+          { $pull: { animals: animalId } },
           { new: true }
         ).populate('animals');
+        animal = await Animal.findByIdAndDelete(animalId);
+        res
+          .status(200)
+          .json({ message: 'El peludo se eliminó correctamente', animal, ong });
       } else {
         throw new Error(
           'No tiene autorización para modificar esta información'
         );
       }
-      res
-        .status(200)
-        .json({ message: 'El peludo se eliminó correctamente', animal, ong });
     } catch (error) {
-      res
-        .status(400)
-        .json({
-          message: 'Algo salió mal, intenta borrarlo nuevamente',
-          error,
-        });
+      res.status(400).json({
+        message: 'Algo salió mal, intenta borrarlo nuevamente',
+        error,
+      });
     }
   },
 };
