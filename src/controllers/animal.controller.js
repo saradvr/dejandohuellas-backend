@@ -9,7 +9,17 @@ module.exports = {
         user: { userTypeId },
       } = req;
       body.ong = userTypeId;
-      const animal = await Animal.create(body);
+      let animal = await Animal.create(body);
+      animal = await animal
+        .populate({
+          path: 'ong',
+          select: 'user -_id',
+          populate: {
+            path: 'user',
+            select: 'name',
+          },
+        })
+        .execPopulate();
       const ong = await Ong.findByIdAndUpdate(
         userTypeId,
         { $push: { animals: animal._id } },
@@ -69,6 +79,38 @@ module.exports = {
       res
         .status(400)
         .json({ message: 'No se pudo actualizar la información', error });
+    }
+  },
+  async deleteAnimal(req, res) {
+    try {
+      const {
+        body: { animalId },
+        user: { userTypeId },
+      } = req;
+      let animal = await Animal.findById(animalId);
+      let ong = {};
+      if (animal.ong == userTypeId) {
+        animal = await Animal.findByIdAndDelete(animalId);
+        ong = await Ong.findByIdAndUpdate(
+          userTypeId,
+          { $pull: { animals: animal._id } },
+          { new: true }
+        ).populate('animals');
+      } else {
+        throw new Error(
+          'No tiene autorización para modificar esta información'
+        );
+      }
+      res
+        .status(200)
+        .json({ message: 'El peludo se eliminó correctamente', animal, ong });
+    } catch (error) {
+      res
+        .status(400)
+        .json({
+          message: 'Algo salió mal, intenta borrarlo nuevamente',
+          error,
+        });
     }
   },
 };
