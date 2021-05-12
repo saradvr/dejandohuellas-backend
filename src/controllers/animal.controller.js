@@ -58,7 +58,7 @@ module.exports = {
         user: { userTypeId },
       } = req;
       let animal = await Animal.findById(animalId);
-      if (animal.ong.ToString() === userTypeId.toString()) {
+      if (animal.ong.toString() === userTypeId.toString()) {
         animal = await Animal.findByIdAndUpdate(animalId, body, {
           new: true,
         }).populate({
