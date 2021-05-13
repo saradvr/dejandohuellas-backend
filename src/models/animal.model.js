@@ -18,6 +18,7 @@ const animalSchema = new Schema(
     age: {
       type: Number,
       required: true,
+      min: [1, 'La edad debe ser mayor a 0.'],
     },
     sex: {
       type: String,
@@ -30,6 +31,10 @@ const animalSchema = new Schema(
     size: {
       type: String,
       required: true,
+      enum: {
+        values: ['Pequeño', 'Mediano', 'Grande'],
+        message: 'Tamaño inválido',
+      },
     },
     profilePicture: {
       type: String,
