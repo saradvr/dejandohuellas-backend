@@ -4,6 +4,9 @@ module.exports = {
   async create(req, res) {
     try {
       const { body } = req;
+      if(Object.keys(body).length === 0){
+        throw new Error ('Cancelada');
+      }
       let transaction = await Transaction.findOne({ refPago: body.refPago });
       if (!transaction) {
         transaction = await Transaction.create(body);
@@ -14,7 +17,7 @@ module.exports = {
     } catch (error) {
       res
         .status(400)
-        .json({ message: 'No se pudo guardar la transacción.', error });
+        .json({ message: error.message });
     }
   },
   async list(req, res) {
