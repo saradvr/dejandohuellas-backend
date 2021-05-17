@@ -37,7 +37,7 @@ module.exports = {
       } = req;
       const animal = await Animal.findById(animalId).populate({
         path: 'ong',
-        select: 'user -_id',
+        select: 'user',
         populate: {
           path: 'user',
           select: 'name',

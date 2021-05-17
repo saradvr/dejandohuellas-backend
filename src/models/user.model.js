@@ -28,6 +28,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     ongId: {
       type: Schema.Types.ObjectId,
