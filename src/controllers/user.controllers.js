@@ -44,7 +44,7 @@ module.exports = {
   async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email }).select('+password');
+      const user = await User.findOne({ email });
       if (!user) {
         throw Error('Usuario o contraseña es incorrecto');
       }

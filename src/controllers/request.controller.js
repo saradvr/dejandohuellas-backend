@@ -27,19 +27,23 @@ module.exports = {
         { new: true }
       );
 
-      res.status(201).json({
-        message: 'Solicitud guardada con éxito.',
-        request,
-        person,
-        ong,
-        animal,
-      });
+      res
+        .status(201)
+        .json({
+          message: 'Solicitud guardada con éxito.',
+          request,
+          person,
+          ong,
+          animal,
+        });
     } catch (error) {
-      res.status(400).json({
-        message:
-          'No se pudo guardar la solicitud, por favor intente nuevamente.',
-        error,
-      });
+      res
+        .status(400)
+        .json({
+          message:
+            'No se pudo guardar la solicitud, por favor intente nuevamente.',
+          error,
+        });
     }
   },
 };
