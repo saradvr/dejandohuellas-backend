@@ -42,4 +42,25 @@ module.exports = {
       });
     }
   },
+  async update(req, res) {
+    try {
+      const {
+        body: { status, _id },
+      } = req;
+      const request = await Request.findByIdAndUpdate(
+        _id,
+        { status: status },
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ message: 'Solicitud actualizada con éxito.', request });
+    } catch (error) {
+      res.status(400).json({
+        message:
+          'No se pudo guardar la solicitud, por favor intente nuevamente.',
+        error,
+      });
+    }
+  },
 };
