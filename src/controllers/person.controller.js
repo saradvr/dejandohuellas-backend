@@ -39,7 +39,24 @@ module.exports = {
       } = req;
       const person = await Person.findByIdAndUpdate(userTypeId, body, {
         new: true,
-      });
+      })
+        .populate('user')
+        .populate({
+          path: 'requests',
+          select: 'animal status',
+          populate: {
+            path: 'animal',
+            select: 'name profilePicture ong',
+            populate: {
+              path: 'ong',
+              select: 'user',
+              populate: {
+                path: 'user',
+                select: 'name',
+              },
+            },
+          },
+        });
       res
         .status(200)
         .json({ message: 'Datos actualizados con éxito.', person });
