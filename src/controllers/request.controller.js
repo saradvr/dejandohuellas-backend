@@ -66,35 +66,38 @@ module.exports = {
   async list(req, res) {
     try {
       const {
+        query: { filterStatus, filterAnimalId, filterAnimalType },
         user: { userTypeId },
       } = req;
       let filters = {
         ong: userTypeId,
       };
+      if (!!filterStatus && filterStatus !== '') {
+        filters.status = filterStatus;
+      }
+      if (!!filterAnimalId && filterAnimalId !== '') {
+        filters.animal = filterAnimalId;
+      }
+      let animals = {};
+      if (!!filterAnimalType && filterAnimalType !== '') {
+        animals = await Animal.find({ animalType: filterAnimalType });
+        filters.animal = { $in: animals };
+      }
+
       const requests = await Request.find(filters)
         .select('animal ong person status')
         .populate({
           path: 'animal',
           select: 'name profilePicture -_id',
-        })
-        .populate({
-          path: 'person',
-          select: 'phone city user -_id',
-          populate: {
-            path: 'user',
-            select: 'name email -_id',
-          },
         });
       res
         .status(200)
         .json({ message: 'Solicitudes cargadas con éxito.', requests });
     } catch (error) {
-      res
-        .status(400)
-        .json({
-          message: 'Error al cargar solicitudes, intente de nuevo.',
-          error,
-        });
+      res.status(400).json({
+        message: 'Error al cargar solicitudes, intente de nuevo.',
+        error,
+      });
     }
   },
   async deleteRequest(req, res) {
@@ -121,15 +124,13 @@ module.exports = {
           { $pull: { requests: requestId } },
           { new: true }
         );
-        res
-          .status(200)
-          .json({
-            message: 'Solicitud eliminada con éxito',
-            request,
-            ong,
-            person,
-            animal,
-          });
+        res.status(200).json({
+          message: 'Solicitud eliminada con éxito',
+          request,
+          ong,
+          person,
+          animal,
+        });
       } else {
         throw new Error('No tiene permiso para eliminar esta solicitud.');
       }
