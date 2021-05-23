@@ -51,7 +51,8 @@ module.exports = {
         _id,
         { status: status },
         { new: true }
-      ).populate('animal')
+      )
+        .populate('animal')
         .populate({
           path: 'person',
           select: 'phone city user -_id',
@@ -116,7 +117,8 @@ module.exports = {
       } = req;
       let request = await Request.findById(requestId);
       if (userTypeId.toString() === request.ong.toString()) {
-        request = await Request.findByIdAndDelete(requestId).populate('animal')
+        request = await Request.findByIdAndDelete(requestId)
+          .populate('animal')
           .populate({
             path: 'person',
             select: 'phone city user -_id',
